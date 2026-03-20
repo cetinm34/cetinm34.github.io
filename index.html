@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer Blog | Hoş Geldiniz</title>
+    <style>
+        /* Ana Tasarım Ayarları */
+        body {
+            background-color: #0b0b0b;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigasyon Menüsü */
+        nav {
+            background-color: #1a1a1a;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff0000;
+            box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Kahraman Bölümü (Hero Section) */
+        .hero {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px #ff0000;
+        }
+
+        /* Blog Yazıları Alanı */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ff0000;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: #ff0000;
+            margin-top: 0;
+        }
+
+        /* Buton Stili */
+        .btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">GAMER ZONE</div>
+        <div>
+            <a href="#" style="color:white; margin-left:20px; text-decoration:none;">Ana Sayfa</a>
+            <a href="#" style="color:white; margin-left:20px; text-decoration:none;">Videolar</a>
+            <a href="#" style="color:white; margin-left:20px; text-decoration:none;">Hakkımda</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Maceraya Hoş Geldiniz</h1>
+        <p>En yeni oyun rehberleri ve incelemeler burada.</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>İlk Blog Yazım</h2>
+            <p>Bu siteyi kendi ellerimle (ve biraz yapay zeka yardımıyla) kurdum! Artık burada oyun dünyasından haberler paylaşacağım.</p>
+            <a href="#" class="btn">Devamını Oku</a>
+        </div>
+
+        <div class="card">
+            <h2>En İyi 5 Korku Oyunu</h2>
+            <p>Bu yılın en çok ses getiren korku oyunlarını listeledim. Resident Evil serisinden esintiler de var...</p>
+            <a href="#" class="btn">Listeye Göz At</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Gamer Zone. Tüm hakları saklıdır.
+    </footer>
+
+</body>
+</html>
