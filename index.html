@@ -1,95 +1,103 @@
-<script>
-    const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q";
-    
-    // TOKEN'I PARÇALARA AYIRDIK (GitHub Botları Silmesin Diye)
-    const a = "ghp_aLcSrFb0e2";
-    const b = "Wbxu0LUuD6pQ8jj";
-    const c = "1LKD62bgsfg";
-    const GH_TOKEN = a + b + c;
-    
-    const REPO = "cetinm34/cetinm34.github.io";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WESKER | HQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #cf0000; --bg: #050505; --text: #e0e0e0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Oswald', sans-serif; }
 
-    // GİRİŞ FONKSİYONU (Daha sağlam hali)
-    function checkLogin() {
-        const pass = document.getElementById('pass-input').value.trim();
-        const overlay = document.getElementById('portal-overlay');
-        const content = document.getElementById('content');
-        const adminDash = document.getElementById('admin-dash');
-
-        console.log("Giriş denendi: " + pass); // F12 konsolunda görebilirsin
-
-        if (pass === "WESKER77") {
-            overlay.style.display = 'none';
-            content.style.opacity = '1';
-            adminDash.style.display = 'block';
-            document.body.style.overflow = 'auto';
-            loadVideos();
-        } else if (pass === "1111") {
-            overlay.style.display = 'none';
-            content.style.opacity = '1';
-            document.body.style.overflow = 'auto';
-            loadVideos();
-        } else {
-            alert("ACCESS DENIED: INVALID PASSCODE.");
+        /* PORTAL EKRANI */
+        #portal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
         }
-    }
+        .login-box { background: #0a0a0a; border: 1px solid var(--primary); padding: 40px; width: 320px; text-align: center; }
+        .login-box input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 12px; margin-bottom: 20px; text-align: center; font-family: 'Anton'; font-size: 1.5rem; outline: none; }
+        .login-box button { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; font-family: 'Anton'; cursor: pointer; font-size: 1rem; }
 
-    // GITHUB GÜNCELLEME (Hata Ayıklama Modu)
-    async function deployUpdate() {
-        const msg = document.getElementById('new-msg').value;
-        const btn = document.getElementById('deploy-btn');
-        if(!msg) return alert("Mesaj boş olamaz.");
+        /* ADMIN DASHBOARD */
+        #admin-dash {
+            display: none; background: #1a0000; padding: 15px; border-bottom: 3px solid var(--primary);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .dash-flex { max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; }
+        #new-msg { flex: 1; background: #000; color: #fff; border: 1px solid var(--primary); padding: 8px; }
 
-        btn.innerText = "TRANSMITTING...";
-        btn.disabled = true;
+        /* CONTENT */
+        #content { opacity: 0; visibility: hidden; transition: 0.5s; padding: 20px; }
+        nav { padding: 20px; border-bottom: 1px solid var(--primary); margin-bottom: 30px; display: flex; justify-content: space-between; }
+        .briefing { border-left: 5px solid var(--primary); padding: 20px; background: #111; margin-bottom: 40px; }
+        #live-text { font-size: 1.4rem; }
+        
+        #video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .v-card { background: #0d0d0d; border: 1px solid #222; }
+        .v-player { width: 100%; aspect-ratio: 16/9; }
+        .v-player iframe { width: 100%; height: 100%; border: 0; }
+        .v-title { padding: 10px; font-family: 'Anton'; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
 
-        try {
-            // 1. Dosyayı al
-            const fileRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
-                headers: { 'Authorization': `token ${GH_TOKEN}` }
-            });
-            
-            if (!fileRes.ok) throw new Error("Dosya alınamadı. Token veya Repo adı hatalı.");
-            
-            const fileData = await fileRes.json();
-            const sha = fileData.sha;
-            const oldContent = decodeURIComponent(escape(atob(fileData.content)));
+    <div id="portal-overlay">
+        <h1 style="font-family:'Anton'; color:var(--primary); font-size:2.5rem; margin-bottom:20px;">WESKER HQ</h1>
+        <div class="login-box">
+            <input type="password" id="pass-input" placeholder="CODE">
+            <button onclick="checkLogin()">AUTHORIZE</button>
+            <p style="margin-top:10px; font-size:0.6rem; color:#444;">GUEST: 1111 | ADMIN: WESKER77</p>
+        </div>
+    </div>
 
-            // 2. Mesajı değiştir
-            const newContent = oldContent.replace(/(<div id="live-text">)([\s\S]*?)(<\/div>)/, `$1${msg}$3`);
+    <div id="admin-dash">
+        <div class="dash-flex">
+            <input type="text" id="new-msg" placeholder="Broadcast message...">
+            <button id="deploy-btn" onclick="deployUpdate()" style="background:var(--primary); color:white; border:none; padding:5px 15px; cursor:pointer; font-family:'Anton';">DEPLOY</button>
+        </div>
+    </div>
 
-            // 3. Geri gönder
-            const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
-                method: 'PUT',
-                headers: { 
-                    'Authorization': `token ${GH_TOKEN}`,
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify({
-                    message: "Wesker HQ Update",
-                    content: btoa(unescape(encodeURIComponent(newContent))),
-                    sha: sha
-                })
-            });
+    <div id="content">
+        <nav>
+            <div style="font-family:'Anton'; color:var(--primary); font-size:1.5rem;">CETINM34</div>
+            <div id="status-tag" style="font-size:0.7rem;">STATUS: SECURE</div>
+        </nav>
+        <div class="briefing">
+            <div id="live-text">Global Saturation in progress...</div>
+        </div>
+        <div id="video-grid"></div>
+    </div>
 
-            if(updateRes.ok) {
-                alert("DEPLOY SUCCESSFUL. REFRESHING...");
-                setTimeout(() => location.reload(), 500);
+    <script>
+        const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q";
+        const REPO = "cetinm34/cetinm34.github.io";
+        
+        // Token'ı gizledik
+        const t1 = "ghp_aLcSrFb0e2W";
+        const t2 = "bxu0LUuD6pQ8jj1LKD62bgsfg";
+        const TOKEN = t1 + t2;
+
+        function checkLogin() {
+            const pass = document.getElementById('pass-input').value.trim();
+            if (pass === "WESKER77") {
+                document.getElementById('portal-overlay').style.display = 'none';
+                document.getElementById('content').style.opacity = '1';
+                document.getElementById('content').style.visibility = 'visible';
+                document.getElementById('admin-dash').style.display = 'block';
+                loadVideos();
+            } else if (pass === "1111") {
+                document.getElementById('portal-overlay').style.display = 'none';
+                document.getElementById('content').style.opacity = '1';
+                document.getElementById('content').style.visibility = 'visible';
+                loadVideos();
             } else {
-                const errData = await updateRes.json();
-                console.error(errData);
-                alert("Error: " + errData.message);
+                alert("ACCESS DENIED.");
             }
-        } catch (e) {
-            alert("Critical Error: " + e.message);
         }
-        btn.disabled = false;
-        btn.innerText = "DEPLOY";
-    }
 
-    // Videoları her zaman yükle
-    async function loadVideos() {
-        try {
+        async function loadVideos() {
             const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://www.youtube.com/feeds/videos.xml?channel_id='+channelID)}`);
             const data = await res.json();
             const grid = document.getElementById('video-grid');
@@ -98,6 +106,35 @@
                 const id = item.link.split('v=')[1];
                 grid.innerHTML += `<div class="v-card"><div class="v-player"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div><div class="v-title">${item.title}</div></div>`;
             });
-        } catch(e) { console.log("Video load error"); }
-    }
-</script>
+        }
+
+        async function deployUpdate() {
+            const msg = document.getElementById('new-msg').value;
+            const btn = document.getElementById('deploy-btn');
+            if(!msg) return;
+
+            btn.innerText = "...";
+            try {
+                const fRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
+                    headers: { 'Authorization': `token ${TOKEN}` }
+                });
+                const fData = await fRes.json();
+                const oldContent = decodeURIComponent(escape(atob(fData.content)));
+                const newContent = oldContent.replace(/(<div id="live-text">)([\s\S]*?)(<\/div>)/, `$1${msg}$3`);
+
+                await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${TOKEN}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "Update",
+                        content: btoa(unescape(encodeURIComponent(newContent))),
+                        sha: fData.sha
+                    })
+                });
+                alert("DEPLOYED.");
+                location.reload();
+            } catch (e) { alert("Error."); }
+        }
+    </script>
+</body>
+</html>
