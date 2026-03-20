@@ -33,7 +33,7 @@
         }
 
         .hero { 
-            height: 50vh; display: flex; flex-direction: column; 
+            height: 45vh; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center; 
             background: linear-gradient(rgba(0,0,0,0.6), var(--bg)), 
                         url('thumb-1920-455968.jpg'); 
@@ -42,7 +42,7 @@
         }
         .hero h1 { 
             font-family: 'Bebas Neue', cursive; font-size: 5rem; 
-            margin-bottom: 5px; animation: fadeIn 1.5s ease;
+            margin-bottom: 5px;
         }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
@@ -55,60 +55,62 @@
 
         #video-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
             gap: 30px; 
         }
         .video-card { 
             background: var(--card-bg); border-radius: 12px; 
-            overflow: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            overflow: hidden; transition: 0.4s; 
             border: 1px solid rgba(255,255,255,0.03); 
+            position: relative;
         }
-        .video-card:hover { 
-            transform: translateY(-10px); border-color: var(--primary); 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-        .thumb-container { position: relative; overflow: hidden; }
-        .video-card img { width: 100%; transition: 0.5s; }
-        .video-card:hover img { transform: scale(1.1); }
         
+        /* Video Oynatıcı Alanı */
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+        .video-player-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: none;
+        }
+
         .video-info { padding: 20px; }
         .video-info h4 { 
-            font-size: 1rem; line-height: 1.4; height: 2.8em; 
-            overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; 
-            -webkit-box-orient: vertical; margin-bottom: 15px; color: #fff;
+            font-size: 1rem; line-height: 1.4; color: #fff;
+            margin-bottom: 10px; height: 2.8em; overflow: hidden;
         }
-        .watch-btn { 
-            display: block; width: 100%; padding: 12px; 
-            background: var(--primary); color: white; text-align: center; 
-            text-decoration: none; font-weight: bold; border-radius: 6px; 
-            transition: 0.3s; font-family: 'Bebas Neue'; font-size: 1.2rem;
+        
+        .status-badge {
+            font-size: 0.7rem; color: var(--primary); font-weight: bold;
+            text-transform: uppercase; letter-spacing: 2px;
         }
-        .watch-btn:hover { background: #e60000; box-shadow: 0 0 15px var(--primary); }
 
         footer { 
             padding: 60px 20px; text-align: center; background: #050505; 
             border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; 
         }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">FERDI WESKER</div>
-        <div style="color: var(--primary); font-weight: bold; letter-spacing: 2px;">LIVE FEED</div>
+        <div style="color: var(--primary); font-weight: bold; letter-spacing: 2px;">SECURE STREAM</div>
     </nav>
 
     <div class="hero">
         <h1>TRANSMISSIONS</h1>
-        <p style="color: var(--primary); font-weight: bold; letter-spacing: 4px;">GLOBAL SATURATION STATUS: ACTIVE</p>
+        <p style="color: var(--primary); font-weight: bold; letter-spacing: 4px;">LOCAL PLAYBACK ENABLED</p>
     </div>
 
     <div class="container">
-        <h2 class="section-title">Latest Videos</h2>
+        <h2 class="section-title">Encrypted Feed</h2>
         <div id="video-grid">
-            <p style="text-align: center; grid-column: 1/-1; opacity: 0.5;">Accessing Database...</p>
+            <p style="text-align: center; grid-column: 1/-1; opacity: 0.5;">Decrypted Data incoming...</p>
         </div>
     </div>
 
@@ -117,7 +119,6 @@
     </footer>
 
     <script>
-        // Senin Kanal ID'n: Ferdi Wesker 2
         const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q"; 
         const videoGrid = document.getElementById('video-grid');
         const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelID}`;
@@ -131,23 +132,27 @@
                         const videoId = item.link.split('v=')[1];
                         const card = `
                             <div class="video-card">
-                                <div class="thumb-container">
-                                    <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${videoId}/mqdefault.jpg'">
+                                <div class="video-player-container">
+                                    <iframe 
+                                        src="https://www.youtube.com/embed/${videoId}" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                    </iframe>
                                 </div>
                                 <div class="video-info">
+                                    <span class="status-badge">Data Stream</span>
                                     <h4>${item.title}</h4>
-                                    <a href="${item.link}" target="_blank" class="watch-btn">STREAM DATA</a>
                                 </div>
                             </div>
                         `;
                         videoGrid.innerHTML += card;
                     });
                 } else {
-                    videoGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No videos found. Upload content to start saturation.</p>';
+                    videoGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No data found.</p>';
                 }
             })
             .catch(() => {
-                videoGrid.innerHTML = '<p style="color:red; text-align:center; grid-column: 1/-1;">Sync failed. Check connection.</p>';
+                videoGrid.innerHTML = '<p style="color:red; text-align:center; grid-column: 1/-1;">Connection Lost.</p>';
             });
     </script>
 </body>
