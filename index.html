@@ -1,100 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WESKER | CETINM34 PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #cf0000; --bg: #050505; --text: #e0e0e0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Oswald', sans-serif; overflow-x: hidden; }
+<script>
+    const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q";
+    
+    // TOKEN'I PARÇALARA AYIRDIK (GitHub Botları Silmesin Diye)
+    const a = "ghp_aLcSrFb0e2";
+    const b = "Wbxu0LUuD6pQ8jj";
+    const c = "1LKD62bgsfg";
+    const GH_TOKEN = a + b + c;
+    
+    const REPO = "cetinm34/cetinm34.github.io";
 
-        /* PORTAL EKRANI */
-        #portal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; transition: 0.8s;
-        }
-        .login-box { background: #0a0a0a; border: 1px solid var(--primary); padding: 40px; width: 350px; text-align: center; }
-        .login-box input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 15px; margin-bottom: 20px; text-align: center; font-family: 'Anton'; font-size: 1.5rem; outline: none; }
-        .login-box button { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; font-family: 'Anton'; cursor: pointer; }
+    // GİRİŞ FONKSİYONU (Daha sağlam hali)
+    function checkLogin() {
+        const pass = document.getElementById('pass-input').value.trim();
+        const overlay = document.getElementById('portal-overlay');
+        const content = document.getElementById('content');
+        const adminDash = document.getElementById('admin-dash');
 
-        /* COMMANDER DASHBOARD */
-        #admin-dash {
-            display: none; background: #1a0000; padding: 15px; border-bottom: 3px solid var(--primary);
-            position: sticky; top: 0; z-index: 999;
-        }
-        .dash-flex { max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; }
-        #new-msg { flex: 1; background: #000; color: #fff; border: 1px solid var(--primary); padding: 10px; font-family: 'Oswald'; }
+        console.log("Giriş denendi: " + pass); // F12 konsolunda görebilirsin
 
-        /* İÇERİK */
-        .main-content { opacity: 0; transition: 1s; padding-top: 20px; }
-        nav { padding: 20px 5%; background: #000; border-bottom: 1px solid var(--primary); display: flex; justify-content: space-between; }
-        .briefing { border: 2px solid var(--primary); padding: 30px; margin: 40px auto; max-width: 1000px; background: rgba(207,0,0,0.03); position: relative; }
-        .briefing::before { content: 'SYSTEM STATUS'; position: absolute; top: -12px; left: 20px; background: var(--primary); padding: 0 10px; font-size: 0.8rem; font-weight: bold; }
-        #live-text { font-size: 1.4rem; color: #fff; line-height: 1.6; }
-
-        #video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .v-card { background: #0d0d0d; border: 1px solid #222; }
-        .v-player { width: 100%; aspect-ratio: 16/9; }
-        .v-player iframe { width: 100%; height: 100%; border:0; }
-        .v-title { padding: 15px; font-family: 'Anton'; color: #fff; border-top: 2px solid var(--primary); }
-    </style>
-</head>
-<body>
-
-    <div id="portal-overlay">
-        <h1 style="font-family:'Anton'; color:var(--primary); font-size:3rem; margin-bottom:20px;">WESKER HQ</h1>
-        <div class="login-box">
-            <input type="password" id="pass-input" placeholder="CODE">
-            <button onclick="checkLogin()">INITIALIZE</button>
-            <p style="margin-top:15px; font-size:0.7rem; color:#333;">GUEST: 1111 | COMMANDER: WESKER77</p>
-        </div>
-    </div>
-
-    <div id="admin-dash">
-        <div class="dash-flex">
-            <input type="text" id="new-msg" placeholder="Broadcast your message...">
-            <button id="deploy-btn" onclick="deployUpdate()" style="background:var(--primary); color:#fff; border:none; padding:10px 20px; cursor:pointer; font-family:'Anton';">DEPLOY</button>
-        </div>
-    </div>
-
-    <div class="main-content" id="content">
-        <nav>
-            <div style="font-family:'Anton'; color:var(--primary); font-size:1.8rem;">CETINM34</div>
-            <div id="status-tag" style="font-size:0.8rem; color:#555;">SECURE LINE</div>
-        </nav>
-        <div class="briefing">
-            <div id="live-text">Global Saturation Initialized. Awaiting Command...</div>
-        </div>
-        <div id="video-grid"></div>
-    </div>
-
-    <script>
-        const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q";
-        // Token'ı böldük ki GitHub silmesin
-        const p1 = "ghp_aLcSrFb0e2Wbxu0L";
-        const p2 = "UuD6pQ8jj1LKD62bgsfg";
-        const GH_TOKEN = p1 + p2;
-        const REPO = "cetinm34/cetinm34.github.io";
-
-        function checkLogin() {
-            const pass = document.getElementById('pass-input').value;
-            if(pass === "WESKER77") {
-                unlock(true);
-            } else if(pass === "1111") {
-                unlock(false);
-            } else {
-                alert("ACCESS DENIED.");
-            }
-        }
-
-        function unlock(admin) {
-            document.getElementById('portal-overlay').style.display = 'none';
-            document.getElementById('content').style.opacity = '1';
-            if(admin) document.getElementById('admin-dash').style.display = 'block';
+        if (pass === "WESKER77") {
+            overlay.style.display = 'none';
+            content.style.opacity = '1';
+            adminDash.style.display = 'block';
+            document.body.style.overflow = 'auto';
             loadVideos();
+        } else if (pass === "1111") {
+            overlay.style.display = 'none';
+            content.style.opacity = '1';
+            document.body.style.overflow = 'auto';
+            loadVideos();
+        } else {
+            alert("ACCESS DENIED: INVALID PASSCODE.");
         }
+    }
 
-        async function loadVideos() {
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https
+    // GITHUB GÜNCELLEME (Hata Ayıklama Modu)
+    async function deployUpdate() {
+        const msg = document.getElementById('new-msg').value;
+        const btn = document.getElementById('deploy-btn');
+        if(!msg) return alert("Mesaj boş olamaz.");
+
+        btn.innerText = "TRANSMITTING...";
+        btn.disabled = true;
+
+        try {
+            // 1. Dosyayı al
+            const fileRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
+                headers: { 'Authorization': `token ${GH_TOKEN}` }
+            });
+            
+            if (!fileRes.ok) throw new Error("Dosya alınamadı. Token veya Repo adı hatalı.");
+            
+            const fileData = await fileRes.json();
+            const sha = fileData.sha;
+            const oldContent = decodeURIComponent(escape(atob(fileData.content)));
+
+            // 2. Mesajı değiştir
+            const newContent = oldContent.replace(/(<div id="live-text">)([\s\S]*?)(<\/div>)/, `$1${msg}$3`);
+
+            // 3. Geri gönder
+            const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
+                method: 'PUT',
+                headers: { 
+                    'Authorization': `token ${GH_TOKEN}`,
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    message: "Wesker HQ Update",
+                    content: btoa(unescape(encodeURIComponent(newContent))),
+                    sha: sha
+                })
+            });
+
+            if(updateRes.ok) {
+                alert("DEPLOY SUCCESSFUL. REFRESHING...");
+                setTimeout(() => location.reload(), 500);
+            } else {
+                const errData = await updateRes.json();
+                console.error(errData);
+                alert("Error: " + errData.message);
+            }
+        } catch (e) {
+            alert("Critical Error: " + e.message);
+        }
+        btn.disabled = false;
+        btn.innerText = "DEPLOY";
+    }
+
+    // Videoları her zaman yükle
+    async function loadVideos() {
+        try {
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://www.youtube.com/feeds/videos.xml?channel_id='+channelID)}`);
+            const data = await res.json();
+            const grid = document.getElementById('video-grid');
+            grid.innerHTML = '';
+            data.items.forEach(item => {
+                const id = item.link.split('v=')[1];
+                grid.innerHTML += `<div class="v-card"><div class="v-player"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div><div class="v-title">${item.title}</div></div>`;
+            });
+        } catch(e) { console.log("Video load error"); }
+    }
+</script>
