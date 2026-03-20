@@ -1,166 +1,173 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ferdi Wesker | Official Gaming Blog</title>
+    <title>Ferdi Wesker | Global Saturation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* TEMEL AYARLAR */
-        body {
-            background-color: #050505;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+        :root {
+            --primary: #bc0000;
+            --primary-glow: rgba(188, 0, 0, 0.5);
+            --bg: #0a0a0a;
+            --card-bg: #121212;
+            --text: #e0e0e0;
         }
 
-        /* NAVBAR - ÜST MENÜ */
+        * { margin: 0; padding: 0; box-box: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* NAVIGATION */
         nav {
-            background-color: rgba(10, 10, 10, 0.95);
-            padding: 15px 5%;
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #bc0000;
-            position: sticky;
-            top: 0;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: #ff0000;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--primary-glow);
         }
 
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 600;
+        .lang-switch {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-weight: bold;
             transition: 0.3s;
+            border-radius: 4px;
         }
 
-        .nav-links a:hover {
-            color: #ff0000;
-        }
+        .lang-switch:hover { background: var(--primary); }
 
-        /* HERO SECTION - WESKER ARKA PLAN */
+        /* HERO SECTION */
         .hero {
-            height: 500px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            /* 👇 DEĞİŞİKLİK BURADA: SENİN YÜKLEDİĞİN UZUN İSMİ KULLANIYORUZ 👇 */
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), 
-                        url('thumb-1920-455968.jpg'); 
-            /* 👇 DOSYA ADI VE UZANTISI (.jpg) TAM OLARAK AYNI OLMALI 👇 */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(10,10,10,1)), 
+                        url('thumb-1920-455968.jpg'); /* DOSYA ADINI KONTROL ET */
             background-size: cover;
-            background-position: center top;
-            border-bottom: 3px solid #bc0000;
+            background-position: center;
+            background-attachment: fixed; /* Parallax Efekti */
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 3px 3px 15px #000;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 6rem;
+            line-height: 1;
+            margin-bottom: 10px;
+            animation: fadeIn 2s ease;
         }
 
         .hero p {
             font-size: 1.2rem;
-            color: #ff0000;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        /* İÇERİK ALANI */
-        .container {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            border-left: 4px solid #ff0000;
-            padding-left: 15px;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
+            color: var(--primary);
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
-        /* BLOG KARTLARI */
+        /* CONTENT SECTION */
+        .container {
+            max-width: 1200px;
+            margin: -100px auto 100px;
+            padding: 0 20px;
+            position: relative;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
         .card {
-            background-color: #111;
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 25px;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .card:hover {
-            border-color: #ff0000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
         .card h3 {
-            color: #ff0000;
-            margin-top: 0;
-            font-size: 1.4rem;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
         .btn {
             display: inline-block;
-            background-color: #bc0000;
-            color: #fff;
-            padding: 10px 25px;
+            margin-top: 25px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
             text-decoration: none;
-            border-radius: 4px;
             font-weight: bold;
-            margin-top: 15px;
+            border-radius: 50px;
             transition: 0.3s;
         }
 
         .btn:hover {
-            background-color: #ff0000;
-            box-shadow: 0 0 15px #ff0000;
+            box-shadow: 0 0 25px var(--primary);
+            transform: scale(1.05);
         }
 
         /* FOOTER */
         footer {
+            padding: 100px 20px;
             text-align: center;
-            padding: 50px 20px;
-            background-color: #0a0a0a;
-            border-top: 1px solid #222;
-            margin-top: 50px;
+            background: #050505;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        .social-links a {
-            color: #555;
+        .socials a {
+            color: white;
             font-size: 1.5rem;
-            margin: 0 15px;
+            margin: 0 20px;
             text-decoration: none;
+            opacity: 0.5;
             transition: 0.3s;
         }
 
-        .social-links a:hover {
-            color: #ff0000;
+        .socials a:hover { opacity: 1; color: var(--primary); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
         }
     </style>
 </head>
@@ -168,51 +175,96 @@
 
     <nav>
         <div class="logo">FERDI WESKER</div>
-        <div class="nav-links">
-            <a href="#">Ana Sayfa</a>
-            <a href="#">Blog</a>
-            <a href="#">Videolar</a>
-            <a href="#">İletişim</a>
-        </div>
+        <button class="lang-switch" onclick="toggleLanguage()" id="langBtn">TR</button>
     </nav>
 
     <div class="hero">
-        <h1>Complete Global Saturation</h1>
-        <p>Gamer | Content Creator | Resident Evil Enthusiast</p>
+        <h1 id="heroTitle">COMPLETE GLOBAL SATURATION</h1>
+        <p id="heroSub">Gaming • Content • Strategy</p>
     </div>
 
     <div class="container">
-        <h2 class="section-title">Son Paylaşımlar</h2>
-        
         <div class="grid">
             <div class="card">
-                <h3>Yeni Projelerim Yolda</h3>
-                <p>Yakında burada en yeni oyun rehberleri, incelemeler ve projelerim hakkında bilgiler olacak. Takipte kalın.</p>
-                <a href="#" class="btn">Devamını Oku</a>
+                <h3 id="card1Title">LATEST PROJECTS</h3>
+                <p id="card1Text">Deep dives into the Resident Evil universe, custom UEFN maps, and advanced gameplay strategies.</p>
+                <a href="#" class="btn" id="card1Btn">Explore</a>
             </div>
 
             <div class="card">
-                <h3>Kanalıma Abone Olun</h3>
-                <p>En yeni videolar ve canlı yayınlar için YouTube ve Twitch kanallarımı ziyaret edebilirsiniz. Linkler aşağıda.</p>
-                <a href="#" class="btn">İncele</a>
+                <h3 id="card2Title">CONTENT HUB</h3>
+                <p id="card2Text">Watch high-level Mercenaries runs and exclusive mod showcases on my YouTube channel.</p>
+                <a href="#" class="btn" id="card2Btn">Watch Now</a>
             </div>
 
             <div class="card">
-                <h3>Bana Ulaşın</h3>
-                <p>Her türlü soru, iş birliği ve öneri için sosyal medya hesaplarımdan bana ulaşabilirsiniz. Discord yakında.</p>
-                <a href="#" class="btn">Detaylar</a>
+                <h3 id="card3Title">CONNECT</h3>
+                <p id="card3Text">Follow my journey as a creator across all platforms. Global saturation is imminent.</p>
+                <a href="#" class="btn" id="card3Btn">Socials</a>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="social-links">
-            <a href="#">YouTube</a>
-            <a href="#">Twitch</a>
-            <a href="#">Twitter/X</a>
+        <div class="socials">
+            <a href="#">YOUTUBE</a>
+            <a href="#">TWITCH</a>
+            <a href="#">X (TWITTER)</a>
         </div>
-        <p style="margin-top:20px; color:#444;">&copy; 2026 Ferdi Wesker. Her Şey Kontrol Altında.</p>
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.3;">© 2026 FERDI WESKER. UMBRELLA CORP APPROVED.</p>
     </footer>
 
+    <script>
+        let currentLang = 'en';
+
+        const content = {
+            en: {
+                btn: "TR",
+                title: "COMPLETE GLOBAL SATURATION",
+                sub: "Gaming • Content • Strategy",
+                c1T: "LATEST PROJECTS",
+                c1P: "Deep dives into the Resident Evil universe, custom UEFN maps, and advanced gameplay strategies.",
+                c1B: "Explore",
+                c2T: "CONTENT HUB",
+                c2P: "Watch high-level Mercenaries runs and exclusive mod showcases on my YouTube channel.",
+                c2B: "Watch Now",
+                c3T: "CONNECT",
+                c3P: "Follow my journey as a creator across all platforms. Global saturation is imminent.",
+                c3B: "Socials"
+            },
+            tr: {
+                btn: "EN",
+                title: "TAM KÜRESEL DOYGUNLUK",
+                sub: "Oyun • İçerik • Strateji",
+                c1T: "SON PROJELER",
+                c1P: "Resident Evil evrenine derin dalışlar, özel UEFN haritaları ve gelişmiş oyun stratejileri.",
+                c1B: "Keşfet",
+                c2T: "İÇERİK MERKEZİ",
+                c2P: "YouTube kanalımda üst düzey Mercenaries koşularını ve özel mod tanıtımlarını izleyin.",
+                c2B: "Şimdi İzle",
+                c3T: "BAĞLANTI",
+                c3P: "Tüm platformlarda bir içerik üreticisi olarak yolculuğumu takip edin. Küresel doygunluk yakın.",
+                c3B: "Sosyal Medya"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'tr' : 'en';
+            const l = content[currentLang];
+            
+            document.getElementById('langBtn').innerText = l.btn;
+            document.getElementById('heroTitle').innerText = l.title;
+            document.getElementById('heroSub').innerText = l.sub;
+            document.getElementById('card1Title').innerText = l.c1T;
+            document.getElementById('card1Text').innerText = l.c1P;
+            document.getElementById('card1Btn').innerText = l.c1B;
+            document.getElementById('card2Title').innerText = l.c2T;
+            document.getElementById('card2Text').innerText = l.c2P;
+            document.getElementById('card2Btn').innerText = l.c2B;
+            document.getElementById('card3Title').innerText = l.c3T;
+            document.getElementById('card3Text').innerText = l.c3P;
+            document.getElementById('card3Btn').innerText = l.c3B;
+        }
+    </script>
 </body>
 </html>
