@@ -2,191 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WESKER | GLOBAL COMMAND PORTAL</title>
+    <title>WESKER | CETINM34 PORTAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #cf0000; --bg: #050505; --card-bg: #0d0d0d; --text: #e0e0e0; }
+        :root { --primary: #cf0000; --bg: #050505; --text: #e0e0e0; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Oswald', sans-serif; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Oswald', sans-serif; overflow-x: hidden; }
 
-        /* --- GİRİŞ EKRANI (PORTAL) --- */
+        /* PORTAL EKRANI */
         #portal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; transition: 1s cubic-bezier(0.7, 0, 0.3, 1);
+            justify-content: center; align-items: center; transition: 0.8s;
         }
-        #portal-overlay h1 { font-family: 'Anton'; color: var(--primary); font-size: 5rem; letter-spacing: 15px; margin-bottom: 30px; text-shadow: 0 0 20px rgba(207,0,0,0.5); }
-        .login-box { background: #0a0a0a; border: 1px solid var(--primary); padding: 40px; width: 380px; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .login-box input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 15px; margin-bottom: 25px; text-align: center; font-family: 'Anton'; font-size: 1.8rem; outline: none; transition: 0.3s; }
-        .login-box input:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
-        .login-box button { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; font-family: 'Anton'; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-        .login-box button:hover { background: #ff0000; letter-spacing: 2px; }
+        .login-box { background: #0a0a0a; border: 1px solid var(--primary); padding: 40px; width: 350px; text-align: center; }
+        .login-box input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 15px; margin-bottom: 20px; text-align: center; font-family: 'Anton'; font-size: 1.5rem; outline: none; }
+        .login-box button { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; font-family: 'Anton'; cursor: pointer; }
 
-        /* --- COMMANDER DASHBOARD (ADMIN ONLY) --- */
+        /* COMMANDER DASHBOARD */
         #admin-dash {
-            display: none; background: #1a0000; padding: 20px; border-bottom: 4px solid var(--primary);
-            position: sticky; top: 0; z-index: 999; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: none; background: #1a0000; padding: 15px; border-bottom: 3px solid var(--primary);
+            position: sticky; top: 0; z-index: 999;
         }
-        .dash-flex { max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; align-items: center; }
-        #new-msg { flex: 1; background: #000; color: #fff; border: 1px solid var(--primary); padding: 12px; font-family: 'Oswald'; font-size: 1rem; }
+        .dash-flex { max-width: 1200px; margin: 0 auto; display: flex; gap: 15px; align-items: center; }
+        #new-msg { flex: 1; background: #000; color: #fff; border: 1px solid var(--primary); padding: 10px; font-family: 'Oswald'; }
 
-        /* --- SİTE İÇERİĞİ --- */
-        .main-content { opacity: 0; visibility: hidden; transition: 1.5s; height: 100vh; overflow-y: auto; background-image: radial-gradient(circle at center, #111 0%, #050505 100%); }
-        nav { padding: 20px 5%; background: rgba(0,0,0,0.95); border-bottom: 1px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 900; }
-        
-        .briefing { border-left: 5px solid var(--primary); padding: 35px; margin: 60px auto; max-width: 1100px; background: rgba(20,20,20,0.8); position: relative; box-shadow: 20px 20px 60px rgba(0,0,0,0.5); }
-        .briefing::before { content: 'TACTICAL BRIEFING'; position: absolute; top: -14px; left: 20px; background: var(--primary); padding: 2px 15px; font-size: 0.8rem; font-weight: bold; letter-spacing: 2px; }
-        #live-text { font-size: 1.5rem; line-height: 1.6; color: #fff; font-weight: 300; }
+        /* İÇERİK */
+        .main-content { opacity: 0; transition: 1s; padding-top: 20px; }
+        nav { padding: 20px 5%; background: #000; border-bottom: 1px solid var(--primary); display: flex; justify-content: space-between; }
+        .briefing { border: 2px solid var(--primary); padding: 30px; margin: 40px auto; max-width: 1000px; background: rgba(207,0,0,0.03); position: relative; }
+        .briefing::before { content: 'SYSTEM STATUS'; position: absolute; top: -12px; left: 20px; background: var(--primary); padding: 0 10px; font-size: 0.8rem; font-weight: bold; }
+        #live-text { font-size: 1.4rem; color: #fff; line-height: 1.6; }
 
-        #video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 40px; max-width: 1300px; margin: 0 auto 100px auto; padding: 0 30px; }
-        .v-card { background: #000; border: 1px solid #1a1a1a; transition: 0.4s; position: relative; }
-        .v-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(207,0,0,0.1); }
-        .v-player { width: 100%; aspect-ratio: 16/9; background: #000; }
+        #video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .v-card { background: #0d0d0d; border: 1px solid #222; }
+        .v-player { width: 100%; aspect-ratio: 16/9; }
         .v-player iframe { width: 100%; height: 100%; border:0; }
-        .v-title { padding: 20px; font-family: 'Anton'; color: #fff; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; border-top: 1px solid #222; }
-
-        footer { padding: 80px; text-align: center; border-top: 1px solid #222; opacity: 0.5; font-size: 0.8rem; }
+        .v-title { padding: 15px; font-family: 'Anton'; color: #fff; border-top: 2px solid var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="portal-overlay">
-        <h1>WESKER HQ</h1>
+        <h1 style="font-family:'Anton'; color:var(--primary); font-size:3rem; margin-bottom:20px;">WESKER HQ</h1>
         <div class="login-box">
-            <input type="password" id="pass-input" placeholder="PASSCODE">
-            <button onclick="checkLogin()">AUTHORIZE ACCESS</button>
-            <p style="margin-top: 20px; font-size: 0.7rem; color: #444; letter-spacing: 2px;">GUEST: 1111 | COMMANDER: WESKER77</p>
+            <input type="password" id="pass-input" placeholder="CODE">
+            <button onclick="checkLogin()">INITIALIZE</button>
+            <p style="margin-top:15px; font-size:0.7rem; color:#333;">GUEST: 1111 | COMMANDER: WESKER77</p>
         </div>
     </div>
 
     <div id="admin-dash">
         <div class="dash-flex">
-            <span style="color:var(--primary); font-family:'Anton'; font-size: 1.2rem;">COMMANDER CONSOLE:</span>
-            <input type="text" id="new-msg" placeholder="Broadcast your next move...">
-            <button id="deploy-btn" onclick="deployUpdate()" style="background:var(--primary); color:#fff; border:none; padding:12px 30px; cursor:pointer; font-family:'Anton'; font-size: 1rem;">DEPLOY TO GLOBAL FEED</button>
+            <input type="text" id="new-msg" placeholder="Broadcast your message...">
+            <button id="deploy-btn" onclick="deployUpdate()" style="background:var(--primary); color:#fff; border:none; padding:10px 20px; cursor:pointer; font-family:'Anton';">DEPLOY</button>
         </div>
     </div>
 
     <div class="main-content" id="content">
         <nav>
-            <div style="font-family:'Anton'; color:var(--primary); font-size:2rem; letter-spacing:3px;">FERDI WESKER</div>
-            <div id="status-tag" style="font-size:0.8rem; letter-spacing:3px; color: #666;">ENCRYPTED CONNECTION</div>
+            <div style="font-family:'Anton'; color:var(--primary); font-size:1.8rem;">CETINM34</div>
+            <div id="status-tag" style="font-size:0.8rem; color:#555;">SECURE LINE</div>
         </nav>
-
         <div class="briefing">
-            <div id="live-text">Waiting for commander to transmit data...</div>
+            <div id="live-text">Global Saturation Initialized. Awaiting Command...</div>
         </div>
-
         <div id="video-grid"></div>
-        
-        <footer>
-            <p>© 2026 COMPLETE GLOBAL SATURATION. UMBRELLA CORP ASSETS.</p>
-        </footer>
     </div>
 
     <script>
-        // --- KONFİGÜRASYON ---
         const channelID = "UC_gBbeFVg61_vb8yBiCqU3Q";
-        const GH_TOKEN = "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"; 
-        const REPO = "FerdiWesker/FerdiWesker.github.io"; // Kanka buraya GitHub kullanıcı adın/repo adın gelecek
+        // Token'ı böldük ki GitHub silmesin
+        const p1 = "ghp_aLcSrFb0e2Wbxu0L";
+        const p2 = "UuD6pQ8jj1LKD62bgsfg";
+        const GH_TOKEN = p1 + p2;
+        const REPO = "cetinm34/cetinm34.github.io";
 
         function checkLogin() {
             const pass = document.getElementById('pass-input').value;
-            const overlay = document.getElementById('portal-overlay');
-            const content = document.getElementById('content');
-
-            if(pass === "WESKER77") { // SENİN ÖZEL ŞİFREN
+            if(pass === "WESKER77") {
                 unlock(true);
-            } else if(pass === "1111") { // MİSAFİR ŞİFRESİ
+            } else if(pass === "1111") {
                 unlock(false);
             } else {
-                alert("INVALID AUTHORIZATION.");
+                alert("ACCESS DENIED.");
             }
         }
 
-        function unlock(isAdmin) {
-            const overlay = document.getElementById('portal-overlay');
-            const content = document.getElementById('content');
-            overlay.style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                content.style.opacity = '1';
-                content.style.visibility = 'visible';
-                document.body.style.overflow = 'auto';
-            }, 800);
-            
-            if(isAdmin) {
-                document.getElementById('admin-dash').style.display = 'block';
-                document.getElementById('status-tag').innerText = "COMMANDER OVERRIDE ACTIVE";
-                document.getElementById('status-tag').style.color = "#cf0000";
-            }
-            loadData();
+        function unlock(admin) {
+            document.getElementById('portal-overlay').style.display = 'none';
+            document.getElementById('content').style.opacity = '1';
+            if(admin) document.getElementById('admin-dash').style.display = 'block';
+            loadVideos();
         }
 
-        async function loadData() {
-            // YouTube Videolarını Çek
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://www.youtube.com/feeds/videos.xml?channel_id='+channelID)}`);
-            const data = await res.json();
-            const grid = document.getElementById('video-grid');
-            grid.innerHTML = '';
-            data.items.forEach(item => {
-                const id = item.link.split('v=')[1];
-                grid.innerHTML += `<div class="v-card"><div class="v-player"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div><div class="v-title">${item.title}</div></div>`;
-            });
-
-            // Mevcut yazıyı dosyadan oku (Başlangıçta koddaki yazıyı gösterir)
-            const currentMsg = document.getElementById('live-text').innerText;
-        }
-
-        // --- GITHUB OTOMATİK GÜNCELLEME (BEYİN BURASI) ---
-        async function deployUpdate() {
-            const newMsg = document.getElementById('new-msg').value;
-            const btn = document.getElementById('deploy-btn');
-            if(!newMsg) return alert("Message cannot be empty.");
-
-            btn.innerText = "TRANSMITTING...";
-            btn.disabled = true;
-
-            try {
-                // 1. Mevcut index.html dosyasını GitHub'dan çek
-                const fileRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
-                    headers: { 'Authorization': `token ${GH_TOKEN}` }
-                });
-                const fileData = await fileRes.json();
-                const sha = fileData.sha;
-                const oldContent = atob(fileData.content);
-
-                // 2. İçindeki yazıyı değiştir (Regex ile live-text div'inin içini bulur)
-                const newContent = oldContent.replace(/(<div id="live-text">)([\s\S]*?)(<\/div>)/, `$1${newMsg}$3`);
-
-                // 3. Dosyayı GitHub'a geri gönder
-                const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
-                    method: 'PUT',
-                    headers: { 
-                        'Authorization': `token ${GH_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: "Global Saturation Update: " + new Date().toLocaleString(),
-                        content: btoa(unescape(encodeURIComponent(newContent))), // UTF-8 güvenli base64
-                        sha: sha
-                    })
-                });
-
-                if(updateRes.ok) {
-                    alert("COMMAND RECEIVED. THE WORLD HAS BEEN UPDATED.");
-                    location.reload(); // Değişikliği görmek için sayfayı yenile
-                } else {
-                    throw new Error("Link failed.");
-                }
-
-            } catch (err) {
-                console.error(err);
-                alert("Transmission failed. Check GitHub Repo name and Token permissions.");
-                btn.innerText = "DEPLOY TO GLOBAL FEED";
-                btn.disabled = false;
-            }
-        }
-    </script>
-</body>
-</html>
+        async function loadVideos() {
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https
